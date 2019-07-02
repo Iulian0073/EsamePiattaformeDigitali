@@ -1,0 +1,264 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Gestione Utente"
+  },
+  "tags": [
+    {
+      "name": "Utente",
+      "description": "Operazioni sull'utente"
+    }
+  ],
+  "host": "petstore.swagger.io",
+  "basePath": "/v2",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "tags": [
+          "Utente"
+        ],
+        "summary": "Crea utente",
+        "operationId": "createUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Utente creato",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Operazione avvenuta con successo."
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "tags": [
+          "Utente"
+        ],
+        "summary": "Accesso Utente",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Nome Utente",
+            "in": "query",
+            "description": "Inserire il nome del utente per l'accesso.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Password",
+            "in": "query",
+            "description": "Inserire password per l'accesso.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operazione avvenuta con successo.",
+            "schema": {
+              "type": "string"
+            },
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Tentativi per ora concessi all'utente"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Data in UTC quanto i tentativi scadono"
+              }
+            }
+          },
+          "400": {
+            "description": "Nome Utente o Password invalidi."
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "Utente"
+        ],
+        "summary": "Disconnessione Utente",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "Operazione avvenuta con successo."
+          }
+        }
+      }
+    },
+    "/user/{Nome Utente}": {
+      "get": {
+        "tags": [
+          "Utente"
+        ],
+        "summary": "Ricerca Utente",
+        "description": "",
+        "operationId": "getUserByName",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Nome Utente",
+            "in": "path",
+            "description": "Il nome che deve essere estrapolato.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operazione avvenuta con successo.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Nome Utente fornito invalido."
+          },
+          "404": {
+            "description": "Utente non trovato."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Utente"
+        ],
+        "summary": "Aggiornamento Utente",
+        "description": "Questa operazione può essere eseguita solamente se l'utente ha effettuato l'accesso.",
+        "operationId": "updateUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Nome Utente",
+            "in": "path",
+            "description": "Nome che ha bisogno di essere aggiornato.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Utente aggiornato.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Utente fornito invalido."
+          },
+          "404": {
+            "description": "Utente non trovato."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Utente"
+        ],
+        "summary": "Cancellazione Utente",
+        "description": "Questa operazione può essere eseguita solamente se l'utente ha effettuato l'accesso.",
+        "operationId": "deleteUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Nome Utente",
+            "in": "path",
+            "description": "Nome che ha bisogno di essere cancellato.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Utente fornito invalido."
+          },
+          "404": {
+            "description": "Utente non trovato."
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit"
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Nome Utente": {
+          "type": "string"
+        },
+        "Nome": {
+          "type": "string"
+        },
+        "Cognome": {
+          "type": "string"
+        },
+        "e-mail": {
+          "type": "string"
+        },
+        "Password": {
+          "type": "string"
+        },
+        "Cellulare": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Utente"
+      }
+    }
+  }
+}
